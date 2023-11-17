@@ -7,9 +7,13 @@ ___
 >Crea un repositorio PRIVADO en Github con la documentación de esta práctica. Añade la profesor
 como colaborador de ese repositorio. Redacta la práctica usando Markdown, aporta trozos de código
 con los comandos git y capturas de pantalla.
-# Git.
+
+>Redacta la práctica usando Markdown, aporta trozos de código con los comandos ``git`` y capturas de pantalla.
+
+>Ten en cuenta que para realizar la práctica tendrás que hacer un segundo repositorio: primero local y después remoto asociado a Github. En este repositorio también debes poner al profesor como colaborador y hacer referencia a él en el archivo README.md previo a la documentación.
+# 1.- GIT.
 ___
-## Instalación y configuración inicial. (config)
+## 1.1.- Instalación y configuración inicial. (config)
 >Para trabajar en Windows con git utilizaremos la terminal: git bash.
 
 Instala o comprueba que ya este instalado el servicio: git.
@@ -66,8 +70,8 @@ Resultado:
 
 ![Archivo de configuración actualizado](./img/git04.png)
 
-## Crear repositorios locales (init, status, add, commit, log)
-Vamos a crear un repositorio llamado despliegue-demo. Crea una carpeta con el mismo nombre que el repositorio y accede a ella.
+## 1.2.- Crear repositorios locales (init, status, add, commit, log)
+Vamos a crear un repositorio llamado **despliegue-demo**. Crea una carpeta con el mismo nombre que el repositorio y accede a ella.
 
 Inicia un repositorio.
 
@@ -95,7 +99,7 @@ Vuelve a mostrar el estado de git después de añadir un archivo al ``commit``.
 
 Muestra los registros de commit después de realizar este primer commit.
 
-Existe un comando git para a modificar el último commit. Este comando elimina el último commit y
+>Existe un comando git para a modificar el último commit. Este comando elimina el último commit y
 crea otro nuevo con los cambios actuales del ``staged``. El comando es ``git commit --amend -m "mensaje"``.
 
 Primero vamos a crear un repositorio **despliegue-demo**, vamos a crear la carpeta con este nombre y accedemos a ella:
@@ -161,5 +165,460 @@ git log --oneline
 Resultado:
 
 ![Muestro los registros de commit](./img/git11.png)
+
+## 1.3.- Deshacer cambios en repositorios locales
+### 1.3.1.- Cambios en un archivo que ya se ha incluido en algún commit. (diff, restore)
+>Recuerda usar git diff, git diff HEAD o git diff --cached / git diff --staged para ir
+viendo las diferencias de los archivos.
+
+>Puedes usar HEAD, HEAD~1, HEAD~2, ... para referenciar el último commit, al anterior, ...
+
+Vamos a modificar el archivo **README.md**. Lo editamos con un editor gráfico o desde el terminal con nano. Insertamos un par de espacios en blanco y ponermos el nombre del módulo: Despliegue de aplicaciones web.
+
+Muestra el contenido del archivo **README.md**.
+
+Muestra el estado de git después de las modificaciones.
+
+Muestra las diferencia de los cambios entre el directorio de trabajo y el último commit.
+
+Añadimos el archivo al ``staged``.
+
+Vuelve a mostrar el estado de git después de añadir un archivo al ``staged``.
+
+Vuelve a mostrar las diferencia de los cambios pero esta vez entre el ``staged`` y el último commit.
+
+Ahora deshaz este cambio y que el cambio se quede en el directorio de trabajo o ``workspace``.
+
+>Recuerda utilizar ``git restore`` con los parámetros adecuados en lugar de ``git reset`` o ``git checkout``. Es la recomentación de las versiones más actuales de git.
+
+Vuelve a mostrar el estado de git después de deshacer los cambios.
+
+Muestra el contenido del archivo **README.md**. La línea con el nombre del módulo debe seguir estando ya que hemos deshecho el ``staged`` pero aún no hemos restaurado la copia del commit anterior.
+
+Ahora sí queremos restaurar la copia del commit anterior. Es decir, deshacer los cambios del directorio de trabajo.
+
+Vuelve a mostrar el contenido del archivo **README.md**. Ya debe verse como se salvo en el anterior commit.
+
+Muestra el estado de git para comprobar el estado de los cambios en el directorio de trabajo.
+
+Para ello, modificamos el archivo **README.md** añadiéndole un par de espacios en blanco y le ponemos el nombre del módulo. Ejecutamos el siguiente comando y mostramos el contenido del archivo:
+
+```bash
+nano README.md
+```
+Resultado:
+
+![Muestro el archivo README.md modificado](./img/git12.png)
+
+Hacemos un ``git status`` para ver el estado de git después de las modificaciones:
+
+![Muestro el estado del archivo README.md](./img/git13.png)
+
+Muestro las diferencias entre el directorio de trabajo y el último commit (con "+" las líneas que se han agregado y con "-" las que se han eliminado):
+
+```bash
+git diff HEAD
+```
+Resultado:
+
+![Diferencias entre el directorio de trabajo y el último commit](./img/git14.png)
+
+Podemos ver que se ha agregado ese texto, donde aparece el "+".
+
+Añadimos el archivo al **staged** mediante el siguiente comando:
+
+```bash
+git add README.md
+```
+Resultado:
+
+![Añado el README.md al staged](./img/git15.png)
+
+Me sale un warning debido a los espacios en blancos.
+
+Hacemos un ``git status`` para ver el estado de git después de las modificaciones:
+
+![Muestro el estado de git después de añadir el archivo al staged](./img/git16.png)
+
+Nos aparecen los cambios que vamos a realizar al hacer un commit.
+
+Muestro las diferencias de los cambios entre el ``staged`` y el último commit (se puede usar cualquiera de los 2 comandos, hacen lo mismo):
+
+```bash
+git diff --staged   o   git diff --staged HEAD
+```
+Resultado:
+
+![Diferencias de cambios entre el "staged" y el último commit](./img/git17.png)
+
+Aparece lo mismo porque no hemos hecho el commit todavía.
+
+Vamos a deshacer el cambio y lo dejamos en el directorio de trabajo con el siguiente comando. Lo muestro.
+
+```bash
+git restore --staged README.md
+git status
+```
+Resultado:
+
+![Deshacer el cambio y que se quede en el workspace](./img/git18.png)
+
+Ahora es como si no hubiesemos hecho el ``git add README.md``.
+
+Muestro el contenido del **README.md** Sigue todo igual porque hemos deshecho el ``staged`` pero aún no hemos restaurado la copia del commit anterior con ``cat README.md``:
+
+![Muestro el archivo README.md modificado](./img/git19.png)
+
+Restauramos la copia del commit, es decir, deshacemos los cambios del directorio de trabajo con el siguiente comando (reestablece a la versión antes del commit), y muestro el estado de Git con los cambios realizados:
+
+```bash
+git reset --hard
+git status
+```
+Resultado:
+
+![Restauro la copia del commit, deshago los cambios del workspace](./img/git20.png)
+
+Ahora muestro el contenido del **README.md** (aparece vacío porque es como estaba en el anterior commit):
+
+![README.md después de deshacer los cambios](./img/git21.png)
+
+### 1.3.3.- Cambios en un commit (revert, reset, show, tag)
+Crea un nuevo archivo **centro.md** con el nombre del instituto y haz un ``commit``.
+
+>Puedes hacer la acciones add + commit en un solo paso con: ``git commit -am 'mensaje'``. Pero esto solo funciona con los archivos que ya están en un commit, no con los archivos nuevos.
+
+Muestra los registros de commit.
+
+Muestra las diferencias entre los dos últimos commit
+
+>CUIDADO con ``git revert`` y ``git reset`` ya que son comando destructivos. Solo usar en local no usar en los repositorios remotos.
+
+Revierte el último commit.
+
+>Como el comando ``revert`` crea un nuevo commit debes indicar un mensaje o utilizar el mensaje que te proponen.
+
+Vuelve a mostrar los registros de commit. Debe aparecer un nuevo commit revertiendo los cambios.
+
+Muestra el listado de archivos del directorio para comprobar si se ha eliminado el archivo **instituto.md**.
+
+>Si quisieramos hacer varios revert seguido podemos usar el modificador ``--no-commit`` y al terminar de revertir cambios usariamos git ``revert --continue``.
+
+Añade tu nombre al archivo README.md y haz un commit.
+
+Muestra el nuevo contenido de **README.md**.
+
+Muestra el estado de git para ver que el directorio de trabajo está limpio.
+
+Muestra los registro de commit.
+
+Elimina el último commit que modificaba el archivo **README.md**, pero manteniendo los cambios en el directorio de trabajo.
+
+Vuelve a mostrar los registros de commit para ver que el último commit ha desaparecido.
+
+Vuelve a mostrar el estado de git para ver que los cambios están en el directorio de trabajo.
+
+Si queremos obtener una información más extensa de los cambios que se han producido en un commit podemos usar el comando show. Por ejemplo, para ver los cambios del último commit podemos hacer: ``git show HEAD`` o ``git show 8553abd``.
+
+Siguiente ejemplo de reset. Añade y haz commit con los cambios que están pendientes.
+
+Muestra los registro de commit.
+
+Elimina por segunda vez el último commit que modificaba el archivo **README.md**, pero manteniendo los cambios del ``staged``.
+
+Vuelve a mostrar los registros de commit para ver que el último commit ha desaparecido.
+
+Vuelve a mostrar el estado de git para ver que los cambios ahora están en el ``staged``.
+
+Último ejemplo de reset. Haz commit con los cambios que están pendientes.
+
+Muestra los registro de commit.
+
+Elimina por última vez el último commit que modificaba el archivo **README.md** sin guardar los cambios.
+
+Vuelve a mostrar los registros de commit para ver que el último commit ha desaparecido.
+
+Vuelve a mostrar el estado de git para ver que no hay cambios pendientes.
+
+>No se debe utilizar reset para borrar commit que ya se ha subido a repositorios remotos. Solo para uso local y commit recientes que no se han publicado y otras personas pueden estar usando.
+
+Marca el último commit como etiqueta ligera **v2.1**. Marca el anterior commit como etiqueta anotada **v.2.0**.
+
+Vuelve a mostrar los registros de commit para ver las etiquetas recién creadas.
+
+Muestra la información detallada de la etiqueta v2.0. Usa el comando ``show``.
+
+Para ello, primero vamos a crear el archivo **Aguadulce.md** y hacemos un commit:
+
+```bash
+touch Aguadulce.md
+git status
+git add Aguadulce.md
+git commit -m "Añado Aguadulce.md"
+```
+Resultado:
+
+![Creo Aguadulce.md](./img/git22.png)
+
+Muestro el estado y el registro de commits con:
+
+```bash
+git status
+git log --oneline
+```
+
+Resultado:
+
+![Ver el registro de commits](./img/git23.png)
+
+Para mostrar la diferencia entre los dos últimos commit ejecutamos el siguiente comando:
+
+```bash
+git diff HEAD HEAD~1
+```
+
+Resultado:
+
+![Diferencia entre los dos últimos commit](./img/git24.png)
+
+Revierto el último commit utilizando el mensaje que tiene el último commit y muestro el registro de commit:
+
+```bash
+git revert --no-edit HEAD
+git log --oneline
+```
+
+Resultado:
+
+![Revierto los cambios con el mismo mensaje y muestro registro de commit](./img/git25.png)
+
+Muestro un listado de los archivos del directorio para comprobar que se ha eliminado **Aguadulce.md**:
+
+![Comprobar si Aguadulce.md se ha eliminado](./img/git26.png)
+
+Añado mi nombre al archivo **README.md**, hago un commit, muesto el contenido del archivo y muestro el estado de git para comprobar que está todo limpio:
+
+![Agrego mi nombre a README.md y hago commit](./img/git27.png)
+
+Utilizo ``'git commit -am "mensaje"'`` para hacer el **add** y el **commit** en un sólo paso.
+
+Muestro los registros de commit, elimino el último commit que modificaba el archivo **README.md** pero manteniendo los cambios en el directorio de trabajo:
+
+```bash
+git log --oneline
+git reset --mixed HEAD^
+git log --oneline
+git status
+```
+
+Resultado:
+
+![Elimino el último commit manteniendo los cambios](./img/git28.png)
+
+Con ``--soft`` consigo mantener los cambios en el directorio de trabajo. Aparece en el estado de git que debemos hacer commit para añadir el **README.md**, ya que aunque lo hayamos hecho anteriormente, al hacer el ``revert`` se ha eliminado el último commit pero los cambios realizados en el **README.md** siguen estando.
+
+Para obtener una información más extensa de un commit podemos utilizar el comando siguiente:
+
+```bash
+git show HEAD
+```
+
+Resultado:
+
+![Obtener una información más extensa de un commit](./img/git29.png)
+
+Ahora añado y hago commit de los cambios pendientes y muestro el registro de commit:
+
+```bash
+git commit -am "Añado commit para otro ejemplo de reset"
+git log --oneline
+```
+
+Resultado:
+
+![Commiteo todos los cambios pendientes](./img/git30.png)
+
+Elimino por segunda vez el último commit (el que acabo de hacer) pero manteniendo los cambios del ``staged``, vuelvo a mostrar los registros de commit y el estado de git:
+
+```bash
+git reset --soft HEAD^
+git log --oneline
+git status
+```
+
+Resultado:
+
+![Vuelvo a eliminar el último commit pero manteniendo los cambios del staged](./img/git31.png)
+
+Para el último ejemplo de ``reset`` vamos a hacer un commit con los cambios que están pendientes, muestro los registros de commit, elimino por última vez el último commit sin guardar los cambios, después muestro los registros de commit y el estado de git con los siguientes comandos:
+
+```bash
+git commit -m "Último ejemplo de reset sin mantener los cambios"
+git log --oneline
+git reset --hard HEAD^
+git log --oneline
+git status
+```
+
+Resultado:
+
+![Vuelvo a eliminar el último commit pero sin mantener ningún cambio](./img/git32.png)
+
+Marco el último commit como etiqueta ligera v2.1, marco el anterior commit como etiqueta anotada v2.0, muestro los registros de commit para ver las etiquetas creadas recientemente y muestro la información detallada de la etiqueta v2.0 con los siguientes comandos:
+
+```bash
+git tag v2.1 cfbdf61        o       git tag v2.1
+git tag -a v2.0 4f51cbb -m "Versión 2.0 del commit anterior al último"
+git log --oneline
+git show HEAD~1
+```
+
+Resultado:
+
+![Creo etiquetas v2.1 y v2.0 y muestro la información detallada](./img/git33.png)
+
+Si no se indica ningún commit (el texto que va después de asignar la versión de la etiqueta, en este caso "cfbdf61" sería el último commit) se asociará esta etiqueta con el commit actual.
+
+Se puede crear la etiqueta anotada sin mensaje también eliminando el ``-m "mensaje"``.
+
+## 1.4.- Ramas (branch, switch, merge)
+Muestra el estado de git. No debe haber cambios para hacer commit.
+
+Muestra las ramas.
+
+Crea una nueva rama llamada **rama-nueva**.
+
+Volver a mostrar las ramas.
+
+Cambiar a la nueva rama.
+
+Volver a mostrar las ramas. Debe aparecer que nos hemos movido de rama.
+
+Cambia el nombre de la rama a: **rama-antigua**.
+
+Volver a mostrar las ramas. El nombre debe haber cambiado.
+
+Elimina la rama **rama-antigua**.
+
+Volver a mostrar las ramas. La rama ya no debe estar.
+
+> Recuerda utilizar ``git switch`` con los parámetros adecuados en lugar de ``git checkout``. Es la recomentación de las versiones más actuales de git. Tened en cuenta que ``ckekout`` tambien permite deshacer cambios y es más destructiva.
+
+Muestra el estado de git.
+
+Modifica el archivo **README.md** y añade tu nombre.
+
+Muestra el estado de git. Debe aparecer el cambio que hemos hecho.
+
+Crea una rama llamada **rama-modificacion** y cambiate a ella en un solo paso.
+
+Vuelve a mostrar el estado de git. El cambio que hemos hecho en el directorio de trabajo sigue estando ahí.
+
+Añade los cambios a ``staged`` y vuelve a mostrar el estado de git.
+
+Cambia a la rama principal y vuelve a mostrar el estado de git. Los cambios añadidos al ``staged`` siguen estando en su sitio.
+
+Asegurate de estar en la **rama modificacion** y lleva los cambios a ``commit``.
+
+Muestra el estado de git y muestra el contenido del archivo **README.md**.
+
+Cambia a la rama principal, master o main y muestra el contenido del archivo **README.md**. Debe ser diferente al mostrado anteriormente. Ahora tenemos dos ramas con código diferente.
+
+> El comando ``--discard-changes`` de ``switch`` permite eliminar los cambios, si los hubiera, antes de crear una nueva rama y cambiar a ella.
+
+Vamos a ver como seguir el historial de commit en ambas ramas. Posicionate en la rama **principal** y muestra el registro de commit.
+
+Cambia a la rama **rama-modificacion** y muestra el registro de commit. Debe haber uno más.
+
+> Si lo que queremos es ver en qué commit se a modificado un determinado archivo podemos indicarselo al comando ``log`` con el parámetro ``--follow archivo.txt``. Por ejemplo, si queremos saber los commit en los que ha cambiado **README.md**: ``git log --oneline --follow README.md``.
+
+Para no tener que estar cambiando de rama para ver los registro de commit debemos usar el parámetro ``--all``. Para añadir los punteros a las ramas usamos el parámetro ``--decorate``. Para mostrar los caminos que sigue cada rama usamos el parámetro ``--graph``.
+
+> Se puede hacer un alias para escribir todo esto con: ``git config --global alias.logfull 'log --oneline --decorate --all --graph'``. Para mostras todos los alias podemos escribir: ``git config --global --get-regexep alias``. Para eliminar un alias usamos: ``git config --global --unset alias.logfull``.
+
+Vamos a hacer una modificación en la rama principal creando un nuevo archivo llamado: **fecha.md** con la fecha de hoy. Y vamos a hacer commit de este cambio en la rama principal.
+
+Mostramos el registro de commit con todos los datos. Se debe ver que han surgido dos líneas que separan las ramas que teníamos. Ahora las ramas tienen contenidos diferentes.
+
+Vamos a fusionar las ramas con las que estamos trabajando. Desde la rama **principal** fusiona la rama **rama-modificacion**.
+
+Vuelve a mostrar el registro de commit con todos los datos. Ahora las líneas de ramas se deben haber unido.
+
+Como ya hemos fusionado las ramas ya podemos borrar el rama **rama-modificacion**. Y listar la ramos que tenemos.
+
+> Al fusionar ramas se nos pueden crear distintas situaciones: que se fusionan sin crear nuevos commit, que se fusionen creando nuevos commit o que no se puedan fusionar automaticamente por que haya algun conflicto que resolver manualmente. Los conflictos se dan cuando modificamos la misma línea de un archivo en distintas ramas. Si se nos presenta un conflicto y no queremos resolverlo podemos volver deshacer la fusión con ``git merge --abort``.
+
+> El comando ``--orphan`` de ``switch`` permite crear ramas huerfanas y cambiar a ellas. Estas ramas pueden ser útiles para adjuntar información anexa a un proyecto, por ejemplo: documentación, web informativa...
+
+Primero, vamos a mostrar el estado de git (debe aparecer sin cambios a realizar), muestro las ramas, creo una nueva rama llamda **rama-nueva** y muestro las ramas con los siguientes comandos:
+
+```bash
+git status
+git branch
+git branch "rama-nueva"
+git branch
+```
+
+Resultado:
+
+![Creo rama nueva llamda "rama-nueva" y muestro las ramas](./img/git34.png)
+
+Al hacer el ``git branch "rama-nueva`` para crear una nueva rama, se pueden omitir las comillas.
+
+Ahora nos cambiamos a la rama que he creado anteriormente (rama-nueva), muestro las ramas que tenemos (aparece la rama a la que nos hemos movido), cambio el nombre de la rama a "rama-antigua" y vuelvo a mostrar las ramas (el nombre debe haber cambiado) con los siguientes comandos:
+
+```bash
+git switch rama-nueva
+git branch
+git branch -M rama-antigua
+git branch
+```
+
+Podemos utilizar ``git checkout -b rama-nueva`` para crear una rama nueva llamada "rama-nueva" y cambiarnos a ella en un sólo comando.
+
+Con ``-M`` podemos cambiar el nombre de la rama (con ``-m`` también funciona).
+
+Podemos utilizar ``git checkout rama-nueva`` en vez de ``git switch rama-nueva``, pero no es recomendable ya que el **checkout** también permite deshacer cambios y es más destructiva.
+
+Resultado:
+
+![Cambio de rama y le cambio el nombre a la rama](./img/git35.png)
+
+Vamos a eliminar la rama **rama-antigua**, luego muestro las ramas (ya no debe aparecer la rama "**rama-antigua**") y muestro el estado de git.
+
+```bash
+git switch master
+git branch -d rama-antigua
+git branch
+git status
+```
+
+Con "``git branch -d rama-antigua``" borro la rama, para poder borrarla he tenido que salirme de la rama anteriormente y meterme en la **master**, porque sino no podría borrarla.
+
+Resultado:
+
+![Elimino la rama "rama-antigua" y muestro las ramas](./img/git36.png)
+
+Modifico el estado del **README.md** añadiendo mi nombre, muestro el estado de git (debe aparecer el cambio realizado), creo una rama llamada **rama-modificacion**, compruebo que me he cambio a ella en un sólo paso (la ha creado y me ha cambiado a ella correctamente) de la siguiente manera:
+
+```bash
+git status
+git checkout -b rama-modificacion
+git branch
+```
+
+Resultado:
+
+![Creo la rama "rama-modificacion" y me cambio a ella en un sólo paso](./img/git37.png)
+
+Vuelvo a mostrar el estado de git (el cambio que hemos hecho en el directorio de trabajo sigue estando ahí), añado los cambios al ``staged`` y vuelvo a mostrar el estado de git con los siguientes comandos:
+
+```bash
+
+```
+
+Resultado:
+
+![Añado los cambios al "staged"](./img/git37.png)
 
 
