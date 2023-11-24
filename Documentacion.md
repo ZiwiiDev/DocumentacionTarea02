@@ -99,8 +99,7 @@ Vuelve a mostrar el estado de git después de añadir un archivo al ``commit``.
 
 Muestra los registros de commit después de realizar este primer commit.
 
->Existe un comando git para a modificar el último commit. Este comando elimina el último commit y
-crea otro nuevo con los cambios actuales del ``staged``. El comando es ``git commit --amend -m "mensaje"``.
+>Existe un comando git para a modificar el último commit. Este comando elimina el último commit y crea otro nuevo con los cambios actuales del ``staged``. El comando es ``git commit --amend -m "mensaje"``.
 
 Primero vamos a crear un repositorio **despliegue-demo**, vamos a crear la carpeta con este nombre y accedemos a ella:
 
@@ -611,14 +610,296 @@ Resultado:
 
 ![Creo la rama "rama-modificacion" y me cambio a ella en un sólo paso](./img/git37.png)
 
+Con ``git checkout -b "rama"`` podemos crear la rama y cambiarnos a ella en un sólo paso.
+
+> El comando ``--discard-changes`` de ``switch`` permite eliminar los cambios, si los hubiera, antes de crear una nueva rama y cambiar a ella.
+
 Vuelvo a mostrar el estado de git (el cambio que hemos hecho en el directorio de trabajo sigue estando ahí), añado los cambios al ``staged`` y vuelvo a mostrar el estado de git con los siguientes comandos:
 
 ```bash
-
+git status
+git add README.md
+git status
 ```
 
 Resultado:
 
-![Añado los cambios al "staged"](./img/git37.png)
+![Añado los cambios al "staged"](./img/git38.png)
+
+Cambio a la rama principal y vuelvo a mostrar el estado de git (los cambios añadidos al ``staged`` siguen estando en su sitio):
+
+```bash
+git switch master
+git status
+```
+
+> Si tenemos el repositorio subido a GitHub nos da error al intentar cambiar de rama debido a que se va a sobreescribir el archivo **README.md**.
+
+Resultado:
+
+![Intento cambiar a la rama principal](./img/git39.png)
+
+![Estado de la rama master](./img/git40.png)
+
+Nos cambiamos a la **rama-modificacion** y hacemos un commit:
+
+```bash
+git switch rama-modificacion
+git commit -m "Actualizo README.md"
+git status
+```
+
+Resultado:
+
+![Commiteo los cambios](./img/git41.png)
+
+Muestro el contenido del archivo **README.md**, me cambio a la rama principal y vuelvo a mostrar el contenido del archivo **README.md**. (Debe ser diferente al mostrado anteriormente. Ahora tenemos dos ramas con código diferente):
+
+Resultado:
+
+![Muestro el contenido del "README.md" de las 2 ramas](./img/git42.png)
+
+Vamos a ver como seguir el historial de commit en ambas ramas. Para ello, vamos a la rama principal y muestro el registro de commit, y luego nos cambiamos a la rama **rama-modificacion** y muestro el registro de commit también:
+
+```bash
+git log --oneline
+git switch rama-modificacion
+git log --oneline
+```
+
+Resultado:
+
+![Muestro registro de commit de ambas ramas](./img/git43.png)
+
+Para no tener que estar cambiando de rama para ver los registro de commit debemos usar el parámetro --all. Para añadir los punteros a las ramas usamos el parámetro --decorate. Para mostrar los caminos que sigue cada rama usamos el parámetro --graph.
+
+```bash
+git log --all --decorate --graph --oneline
+```
+
+Resultado:
+
+![Muestro el registro de commit de todas las ramas sin cambiar de rama](./img/git44.png)
+
+> Se puede hacer un alias para escribir todo esto con: git config --global alias.logfull 'log --oneline --decorate --all --graph'.
+
+Vamos a hacer una modificación en la rama principal creando un nuevo archivo llamado: fecha.md con la fecha de hoy. Y vamos a hacer commit de este cambio en la rama principal.
+
+```bash
+echo "Viernes, 24 de Noviembre de 2023" > fecha.md
+git add fecha.md
+git commit -m "Añado fecha.md"
+```
+
+Resultado:
+
+![Creo "fecha.md" y hago commit desde la rama principal](./img/git45.png)
+
+Muestro el registro de commit con todos los datos. Se debe ver que han surgido dos líneas que separan las ramas que teníamos. Ahora las ramas tienen contenidos diferentes.
+
+```bash
+git log --all --decorate --graph --oneline
+```
+
+Resultado:
+
+![Cada rama tiene distinto contenido](./img/git46.png)
+
+Vamos a fusionar las ramas con las que estamos trabajando. Desde la rama **principal** fusiono la rama **rama-modificacion**, muestro el registro de commit con todos los datos (ahora las líneas de ramas se deben haber unido):
+
+```bash
+git merge rama-modificacion
+git status
+git add .
+git commit -m "Merge de ambas ramas"
+git log --all --decorate --graph --oneline
+git branch -d rama-modifcacion
+```
+
+Al hacer el merge me aparece un conficto debido a que hay contenido distinto en el archivo **README.md** de cada rama, por lo que aparece que se va a sobreescribir, lo añado al ``staged`` y lo comiteo. Luego muestro el registro de commit con todos los datos y borro la rama ``rama-modificacion``:
+
+Resultado:
+
+![Fusiono las ramas y elimino la "rama-modificacion"](./img/git47.png)
+
+Listo las ramas que tengo:
+
+![Listo las ramas que tengo"](./img/git48.png)
+
+# 2.- Github. Trabajo en equipo.
+### 2.1.- Configurar respositorios remotos (remote)
+Muestra los repositorios remotos que tienes configurados. Usa el parámetro ``-v`` para tener una información ampliada.
+
+Muestra las ramas que tenemos. Usa el parámetro ``--all`` para mostrarlas todas.
+
+Ve a la web de Github. Accede con tu usuario y contraseña y crea un repositorio. Una vez creado copia tu URL del método ``https``. Añade capturas de pantalla de este proceso.
+
+De vuelta a la terminal **git bash**, crea el remoto con el enlace copiado anteriormente. Puedes dejar la abreviación en ``origin`` o ponerle el nombre que quieras.
+
+Vuelve a mostrar los repositorios remotos que tienes configurados.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 2.2.- Subir repositorio (push, .gitignore)
+Vuelve a mostrar las ramas que tenemos en nuestro directorio.
+
+Sube la rama principal al repositorio remoto que acabas de configurar. Al usar ``https`` te pedirá el usuario y la contraseña de github. Añade el parámetro ``-u`` para añadir la referencia al upstream.
+
+> Si quisieramos subir todas las ramas a nuestro repositorio remoto podemos cambiar el nombre de la rama ``main`` por el parámetro ``--all``.
+
+Vuelve a mostrar las ramas que tenemos. Deberá aparecer una nueva para el repositorio remoto.
+
+Vamos a crear un archivo llamado **secreto.md** que no queremos que se suba a los repositorios remotos. Crea dicho archivo y usa un archivo ``.gitignore`` para evitar que esto suceda.
+
+Modifica el archivo README.md y añade el nombre del módulo. Haz commit de este cambio y de los anteriores.
+
+Sube estos cambios al repositorio remoto.
+
+Comprueba en la web de github que se ha modificado el archivo README.md, se ha añadido el archivo .gitignore pero no el archivo secreto.md. Añade capturas de pantalla de este proceso.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 2.3.- Descargar repositorio (clone, fetch, pull)
+Vamos a suponer que cambiamos de ordenador y queremos seguir trabajando en el repositorio que ya tenemos subido a github. Crea otra carpeta hermana de despliegue-demo que se llame **ordenador2** y descárgate todo el repositorio con ``clone``.
+
+Modifica el archivo el archivo README.md y deja solo el texto _despliegue-demo_. Realiza un commit y sube los cambios al repositorio remoto con ``push``.
+
+Muestra el registro de commit con todos los datos. Debe aparecer el nuevo commit.
+
+> Cuando trabajamos en equipo a veces queremos saber quién fue la última persona que modifico un archivo. Para ello podemos usar el comando ``blame``, por ejemplo con: ``git blame archivo.txt``.
+
+Comprueba qué usuarios han modificado el archivo README.md con ``blame``.
+
+Si volvieramos a seguir trabajando en el primer ordenador no veriamos estos cambios automaticamente.Cambia a la carpeta **despliegue-demo** original y muestra el registro de commit con todos los datos. No debe aparecer el nuevo commit.
+
+Desde la carpeta original **despliegue-demo**, descarga las actualizaciones de cambios y que se apliquen en el directorio de trabajo con ``pull``.
+
+Vuelve a mostrar el registro de commit con todos los datos. Ya sí debe aparecer el nuevo commit.
+
+Existe otra opción para descargarnos las actualizaciones del repositorio remoto pero que estas no se cargen directamente en nuestro repositorio principal local sino que se queden en el repositorio remotes/origin/main. Desde la carpeta original **despliegue-demo**, vuelve a modifica el archivo el archivo README.md y añade el texto 'hola'. Realiza un commit y sube los cambios al repositorio remoto con ``push``.
+
+Vamos a simular que volvemos a cambiar al **ordenador2**. Cambia de directorio y accede al repositorio.
+
+Muestra todas las ramas incluyendo las remotas. Nos aparecera una tercera rama ``remotes/origin/HEAD`` que nos indica cuál es la rama principal del repositorio remoto.
+
+Muestra el estado de git. Aunque hemos realizado un cambio y subido a Github este no aparece en el estado de git de forma automática.
+
+Descarga las actualizaciones de cambios pero que no se apliquen en el directorio de trabajo con ``fetch``.
+
+Muestra el contenido del archivo **README.md**. Aún no debe aparecer el último texto que añadimos en en otro ordenador. Ya que lo descargamos a la rama ``origin/main`` y no a la ``main`` que es donde estamos trabajando.
+
+Vuelve a mostrar el estado de git. Ahora sí que nos avisa de que nuestra rama principal ``main`` está desactualizada respecto a de la rama ``origin/main`` que nos acabamos de descargar.
+
+En lugar de hacer la sugerencia que nos indica ``git status: git pull`` para actualizar a la última versión de nuestro repositorio remoto, vamos a crear una divergencia de las ramas. Desde la carpeta **ordenador2/despliegue-demo**, crea un nuevo archivo llamado **saludo.md**. Haz un commit local pero no lo subas al repositorio remoto.
+
+Muestra el registro de commit con toda la información. Se deben ver líneas de ramas separadas.
+
+Intenta actualizar el repositorio local con el comando ``pull``. Debe darte un aviso de divergencia de ramas y no hacer el ``pull``.
+
+Esta advertencia es debido a que si ejecutamos el ``pull``, actualizaremos los archivos con los que tenemos en nuestro remoto y el trabajo local se podría perder. En este caso, en lugar de hacer un ``pull`` vamos a realizar una fusión ``merge`` en la rama ``main`` con la rama ``origin/main``. Como para realizar la fusión necesita crear un nuevo commit te pedirá que pongas un mensaje de commit o dejes el que te proponen.
+
+Vuelve a mostrar el registro de commit con todos los datos. Ya sí debe aparecer las líneas de las ramas que vuelven a unirse.
+
+# 3.- Markdown
+Crea una tabla resumen de los comandos de git. La tabla tendrá tres columnas: la primera con el comando, la segunda con una explicación y la tercera con un ejemplo.
+## Resumen de comandos git
+
+|Comando|Función|Ejemplo
+|-|-|-|
+|init|Inicia un repositorio|git init
+|config|Configura opciones de Git|git config --global user.name "nombre"
+|add|Añade los cambios al staged|git add archivo.txt
+|commit|Guarda los cambios en el repositorio|git commit -m "mensaje"
+|status|Muestra el estado de los archivos en el repositorio|git status
+|log|Muestra el historial de commit|git log
+|diff|Muestra las diferencias entre commits, ramas, archivos...|git diff archivo.txt
+|show|Muestra información de un commit|git show -commit-
+|tag|Administra tags (etiquetas)|git tag -a v1.0 -m "Versión 1.0"
+|restore|Restaura archivos en el directorio de trabajo|git restore archivo.txt
+|revert|Crea un commit que deshace todo lo que se ha hecho|git revert --no-edit HEAD
+|reset|Reestablece a la versión antes del commit|git reset --mixed HEAD^
+|branch|Permite crear, listar o eliminar ramas|git branch nueva-rama
+|switch|Cambia de rama|git switch nueva-rama
+|merge|Fusiona ramas|git merge otra-rama
+|remote|Administra repositorios remotos|git remote add origin -URL-
+|clone|Clona un repositorio remoto|git clone -URL-
+|push|Sube los cambios al repositorio remoto|git push origin master
+|pull|Descarga cambios del repositorio remoto|git pull origin master
+|fetch|Descarga cambios del repositorio remoto (sin fusionar)|git fetch origin
+
+# 4.- Uso de Git, Github y Markdown en Visual Studio Code.
+Desde VSCode, crea una nueva rama con el formato ``rama-TuNombre``.
+
+Crea un archivo llamado **resumen.md** con un título y la tabla hecha en el apartado anterior.
+
+Muestra la vista previa de markdown en VSCode.
+
+Desde VSCode, añade y haz commit del archivo **resumen.md** de la rama-TuNombre. Súbelo al repositorio remoto de Github.
+
+Muestra en Github que se ha subido la nueva ``rama-TuNombre`` y que contienen en nuevo archivo **resumen.md**.
+
+Muestra en Github también la rama ``main`` que aún no tienen el archivo **resumen.md**.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+mkdir despliegue_demo3
+mv despliegue-demo3 ordenador2
+cd ordenador2
+git clone git@github.com:ZiwiiDev@2000/despliegue-demo.git
+git status
+ls
+cd despliegue-demo
+git status
+git logfull
+cambiar demo a mayus
+git commit -am "apartado 2.3"
+git push -u origin master
+git blame README.md
+git logfull
+git status
+git pull
+
+git branch -all
 
 
