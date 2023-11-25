@@ -713,7 +713,7 @@ git status
 git add .
 git commit -m "Merge de ambas ramas"
 git log --all --decorate --graph --oneline
-git branch -d rama-modifcacion
+git branch -d rama-modificacion
 ```
 
 Al hacer el merge me aparece un conficto debido a que hay contenido distinto en el archivo **README.md** de cada rama, por lo que aparece que se va a sobreescribir, lo añado al ``staged`` y lo comiteo. Luego muestro el registro de commit con todos los datos y borro la rama ``rama-modificacion``:
@@ -738,22 +738,69 @@ De vuelta a la terminal **git bash**, crea el remoto con el enlace copiado anter
 
 Vuelve a mostrar los repositorios remotos que tienes configurados.
 
+Muestro los repositorios remotos que tengo configurados. Uso el parámetro ``-v`` para tener una información ampliada. Además, muestro las ramas que tengo (uso el parámetro ``all`` para mostrar todas)
 
+```bash
+git remote -v
+git branch --all
+```
 
+Resultado:
 
+![Muestro los repositorios y las ramas](./img/git49.png)
 
+He hecho este apartado en mi casa, por eso aparece "**olive@Ziwii**" en vez del otro usuario de Mañana utilizado en clase.
 
+Al hacer ``git remote -v`` me aparece el remoto con nombre ``origin`` ya hecho porque lo hice anteriormente.
 
+Ahora, voy a la web de Github. Accedo con mi usuario y contraseña y creo un repositorio (ya he subido el repositorio a GitHub anteriormente, por eso no lo volveré a hacer, pero voy a mostrar los pasos de cómo se hace mediante ``HTTPS``):
 
+Vamos a "Mis Repositorios".
 
+![Subir repositorio a GitHub](./img/git50.png)
 
+Luego le damos al botón verde llamado "New".
 
+![Subir repositorio a GitHub](./img/git51.png)
 
+Le ponemos el nombre que queremos que tenga el repositorio remoto (en este caso sería "**despliegue_demo**", pero cómo ya lo tengo creado me aparece que ya está creado, pero debería aceptarlo si no está creado todavía). Lo pongo privado.
 
+![Subir repositorio a GitHub](./img/git52.png)
 
+Si creamos el repositorio nos aparecerá lo siguiente (lo mustro con un repositorio llamado "despliegue-demo" para mostrar cómo se haría). Podemos hacerlo mediante **SSH** o **HTTPS**. Copiamos la ``URL`` de **HTTPS** para hacerlo de esta manera, sería: "https://github.com/ZiwiiDev/despliegue-demo.git".
 
+![Subir repositorio a GitHub](./img/git53.png)
 
+Volvemos al terminal de ``git bash`` y creamos el remoto con el enlace copiado anteriormente (dejo la abreviación en origin):
 
+```bash
+git remote add origin https://github.com/ZiwiiDev/despliegue-demo.git
+git remote -v
+```
+
+Vuelvo a mostrarlos repositorios que tengo configurados.
+
+Con el repositorio que he creado ya sería: "git remote add origin https://github.com/ZiwiiDev/despliegue_demo.git
+
+![Subir repositorio a GitHub en remoto](./img/git54.png)
+
+A mí me aparece que ya existe, pero si no lo hubiera hecho aparecería algo así:
+
+![Subir repositorio a GitHub en remoto](./img/git55.png)
+
+Donde aparece la url sería la que copiamos anteriormente por ``HTTPS`` (he cogido esta imagen de prueba de internet para moestrar qué aparecería en caso de hacer el remoto y subir el repositorio a GitHub, yo lo hice antes para tenerlo guardado en remoto por si se me perdía algo).
+
+Podemos hacerlo también mediante ``SSH``, en nuestro equipo el par de claves asimétricas ssh, luego generamos una clave ``SSH`` en GitHub, copiamos la clave y la pegamos para generar la clave ``SSH``. Hacemos el "``git remote``" con origin y lo que nos aparece al crear el repositorio en GitHub (git@github.com:ZiwiiDev/despliegue_demo.git), luego hacemos "``ssh -T git@github.com``".
+
+Si aparece el siguiente error:
+> fatal: unable to access 'https://ZiwiiDev:71dZmpirsmNsRVQnEj7gfRsdbj8NOfsdDqBOflDa/u4@github.com/ZiwiiDev/Git01.git/': URL rejected: Port number was not a decimal number between 0 and 65535
+
+Tenemos que ejecutar el siguiente comando:
+
+```bash
+git remote set-url origin https://github.com/ZiwiiDev/despliegue_demo
+```
+Y ya tendríamos subido nuestro repositorio a GitHub de forma remota, ahora lo tendríamos tanto en local como en remoto.
 
 # 2.2.- Subir repositorio (push, .gitignore)
 Vuelve a mostrar las ramas que tenemos en nuestro directorio.
@@ -772,20 +819,56 @@ Sube estos cambios al repositorio remoto.
 
 Comprueba en la web de github que se ha modificado el archivo README.md, se ha añadido el archivo .gitignore pero no el archivo secreto.md. Añade capturas de pantalla de este proceso.
 
+Vuelvo a mostrar las ramas que tenemos en nuestro directorio y subo la rama principal al repositorio remoto que acabo de configurar. Al usar https pedirá el usuario y la contraseña de github. Añado el parámetro ``-u`` para añadir la referencia al upstream. Y vuelvo a mostrar las ramas que tenemos.
 
+```bash
+git branch --all
+git push -u origin master
+git branch
+```
 
+Resultado:
 
+![Subo el repositorio y las ramas](./img/git56.png)
 
+A mí me aparece que todo está al día al hacer el "``git push``", esto es porque ya lo he subido a GitHub de forma remota, si no lo hubiera hecho subiría todos los archivos al repositorio remoto. Deberá aparecer una nueva para el repositorio remoto.
 
+Vamos a crear un archivo llamado **secreto.md** que no queremos que se suba a los repositorios remotos. Creo dicho archivo y usa un archivo "**.gitignore**" para evitar que esto suceda.
 
+```bash
+echo "Contenido secreto" > secreto.md
+touch .gitignore
+```
 
+Resultado:
 
+![Creo "secreto.md" y uso .gitignore](./img/git57.png)
 
+![Creo "secreto.md" y uso .gitignore](./img/git58.png)
 
+Añado "**secreto.md**" al "**.gitignore**". Modifico el archivo y añado el nombre del módulo.
 
+Si no añado "**secreto.md**" al "**.gitignore**" aparece en el estado de git que se va a subir "**secreto.md**", pero si lo añado no aparece que se va a subir al hacer el commit (el primer ``git status`` es cuando no está añadido al **.gitignore**, y el segundo es cuando sí está añadido):
 
+![Muestro el estado de git con .gitignore](./img/git59.png)
 
+Ponemos el nombre del módulo en el archivo **README.md**, hacemos commit y subo estos cambios al repositorio remoto:
 
+```bash
+git add .
+git commit -m "Añado .gitignore"
+git push
+```
+
+Resultado:
+
+![Modifico "README.md" y uso .gitignore](./img/git60.png)
+
+Comprobamos en la web de GitHub que se ha modificado el archivo secreto.md, se ha añadido el archivo .gitignore pero no el archivo secreto.md.
+
+![Subo los cambios al remoto](./img/git61.png)
+
+Y así funcionaría el ``.gitignore``.
 
 # 2.3.- Descargar repositorio (clone, fetch, pull)
 Vamos a suponer que cambiamos de ordenador y queremos seguir trabajando en el repositorio que ya tenemos subido a github. Crea otra carpeta hermana de despliegue-demo que se llame **ordenador2** y descárgate todo el repositorio con ``clone``.
@@ -828,6 +911,143 @@ Esta advertencia es debido a que si ejecutamos el ``pull``, actualizaremos los a
 
 Vuelve a mostrar el registro de commit con todos los datos. Ya sí debe aparecer las líneas de las ramas que vuelven a unirse.
 
+Ahora, vamos a suponer que cambiamos de ordenador y queremos seguir trabajando en el repositorio que ya tenemos subido a github. Para ello, creo otra carpeta hermana de despliegue-demo que se llame ordenador2 y me
+descargo todo el repositorio con clone.
+
+```bash
+cd ..
+mkdir ordenador2
+cd ordenador2
+git clone https://github.com/ZiwiiDev/despliegue_demo
+```
+
+Resultado:
+
+![Creo carpeta "ordenador2" y descargo todo el repositorio con "clone"](./img/git62.png)
+
+Modifico el archivo el archivo README.md y dejo solo el texto "despliegue-demo".
+
+```bash
+ls -la
+git status
+git add .
+```
+
+Resultado:
+
+![Modifico README.md y muestro el estado de git](./img/git63.png)
+
+Realizo un commit y subo los cambios al repositorio remoto con push.
+
+```bash
+git commit -m "Modifico README.md"
+git push
+```
+
+Resultado:
+
+![Realizo un commit y subo los cambios al repositorio remoto con push](./img/git64.png)
+
+Muestro el registro de commit con todos los datos. Debe aparecer el nuevo commit.
+
+```bash
+git log --oneline --all --decorate --graph
+```
+
+Si hemos configurado el ``git log`` para que muestre el registro de commit con todos los datos podemos ejecutar el comando ``git logfull``.
+
+![Muestro el registro de commit con todos los datos. Debe aparecer el nuevo commit](./img/git65.png)
+
+Compruebo qué usuarios han modificado el archivo README.md con blame.
+
+```bash
+git blame README.md
+```
+
+![Compruebo qué usuarios han modificado el archivo README.md con blame](./img/git66.png)
+
+Si volvieramos a seguir trabajando en el primer ordenador no veriamos estos cambios automaticamente. Cambio a la carpeta "**despliegue-demo**" original y muestro el registro de commit con todos los datos. No debe aparecer el nuevo commit.
+
+```bash
+cd ..
+cd ..
+cd despliegue-demo
+git log --oneline --all --decorate --graph
+```
+
+![Cambio a la carpeta "**despliegue-demo**" original y muestro el registro de commit](./img/git67.png)
+
+Ahora, desde la carpeta original "**despliegue-demo**", descargo las actualizaciones de cambios y que se apliquen en el directorio de trabajo con pull. Y vuelvo a mostrar el registro de commit con todos los datos. Ya sí debe aparecer el nuevo commit.
+
+```bash
+git pull
+git log --oneline --all --decorate --graph
+```
+
+![Descargo las actualizaciones de cambios y hago pull](./img/git68.png)
+
+Existe otra opción para descargarnos las actualizaciones del repositorio remoto pero que estas no se cargen directamente en nuestro repositorio principal local sino que se queden en el repositorio **remotes/origin/main**. Desde la carpeta original **despliegue-demo**, vuelvo a modificar el archivo el archivo **README.md** y añado el texto 'hola'. Realiza un commit y sube los cambios al repositorio remoto con push.
+
+```bash
+git status
+git add .
+git commit -m "Modifico README.md con "hola""
+git push -u origin
+```
+
+![Vuelvo a modificar el archivo el archivo README.md" y añado el texto 'hola'](./img/git69.png)
+
+Vamos a simular que volvemos a cambiar al ordenador2. Cambio de directorio y accede al repositorio. Muestro todas las ramas incluyendo las remotas. Nos aparecera una tercera rama "**remotes/origin/HEAD**" que nos indica cuál es la rama principal del repositorio remoto.
+
+```bash
+cd ..
+cd ordenador2
+cd despliegue_demo
+git branch --all
+```
+
+![Cambio de directorio, muestro todas las ramas](./img/git70.png)
+
+Muestro el estado de git. Aunque hemos realizado un cambio y subido a Github este no aparece en el estado de git de forma automática. Descargo las actualizaciones de cambios pero que no se apliquen en el directorio de trabajo con fetch.
+
+```bash
+git status
+git fetch
+```
+
+![Cambio de directorio, muestro todas las ramas](./img/git71.png)
+
+Muestro el contenido del archivo "**README.md**". Aún no debe aparecer el último texto que añadimos en el otro ordenador. Ya que lo descargamos a la rama origin/main y no a la ``main`` que es donde estamos trabajando. Vuelvo a mostrar el estado de git. Ahora sí que nos avisa de que nuestra rama principal main está desactualizada respecto a de la rama ``origin/main`` que nos acabamos de descargar.
+
+![Muestro el contenido del archivo "README.md"](./img/git72.png)
+
+En lugar de hacer la sugerencia que nos indica ``git status: git pull`` para actualizar a la última versión de nuestro repositorio remoto, vamos a crear una divergencia de las ramas. Desde la carpeta "**ordenador2/despliegue-demo**", creo un nuevo archivo llamado "**saludo.md*"". Hago un commit local pero no lo subo al repositorio remoto.
+
+```bash
+touch saludo.md
+git status
+git add .
+git commit -m "Añado saludo.md"
+```
+
+![Creo el archivo "saludo.md" y hago commit](./img/git73.png)
+
+Muestro el registro de commit con toda la información. Se deben ver líneas de ramas separadas.
+
+
+![Muestro el registro de commit con toda la información](./img/git74.png)
+
+Intento actualizar el repositorio local con el comando pull. Debe darte un aviso de divergencia de ramas y no hacer el pull.
+
+![Intento actualizar el repositorio local con el comando pull](./img/git75.png)
+
+Esta advertencia es debido a que si ejecutamos el ``pull``, actualizaremos los archivos con los que tenemos en nuestro remoto y el trabajo local se podría perder. En este caso, en lugar de hacer un ``pull`` vamos a realizar una fusión merge en la rama main con la rama ``origin/main``. Como para realizar la fusión necesita crear un nuevo commit te pedirá que pongas un mensaje de commit o dejes el que te proponen. Vuelvo a mostrar el registro de commit con todos los datos. Ya sí debe aparecer las líneas de las ramas que
+vuelven a unirse.
+
+![Merge para que no salga advertencia](./img/git76.png)
+
+Y así se podría descargar repositorio de GitHub.
+
 # 3.- Markdown
 Crea una tabla resumen de los comandos de git. La tabla tendrá tres columnas: la primera con el comando, la segunda con una explicación y la tercera con un ejemplo.
 ## Resumen de comandos git
@@ -868,38 +1088,51 @@ Muestra en Github que se ha subido la nueva ``rama-TuNombre`` y que contienen en
 
 Muestra en Github también la rama ``main`` que aún no tienen el archivo **resumen.md**.
 
+Vamos a VSCode y creo una nueva rama con el formato "**rama-OliverFabian**" y me cambio a ella en un sólo comando:
 
+```bash
+git checkout -b rama-OliverFabian
+```
 
+Resultado:
 
+![Creo nueva rama "rama-OliverFabian](./img/git77.png)
 
+Creo un archivo llamado "**resumen.md**" con un título y la tabla hecha en el apartado anterior.
 
+```bash
+touch resumen.md
+```
 
+Muestro la vista previa de markdown en VSCode:
 
+![Creo el archivo "resumen.md", escribo un título y la tabla hecha anteriormente](./img/git78.png)
 
+Añado y hago commit del archivo "**resumen.md**" de la "**rama-OliverFabian**". Y lo subo al repositorio remoto de Github.
 
-
-
-
-
-
-
-mkdir despliegue_demo3
-mv despliegue-demo3 ordenador2
-cd ordenador2
-git clone git@github.com:ZiwiiDev@2000/despliegue-demo.git
+```bash
 git status
-ls
-cd despliegue-demo
-git status
-git logfull
-cambiar demo a mayus
-git commit -am "apartado 2.3"
-git push -u origin master
-git blame README.md
-git logfull
-git status
-git pull
+git add .
+git commit -m "Añado resumen.md"
+git push --set-upstream origin rama-OliverFabian
+```
 
-git branch -all
+Resultado:
 
+![Añado y hago commit del archivo "resumen.md" de la "rama-OliverFabian".](./img/git79.png)
 
+Muestro en Github que se ha subido la nueva "**rama-OliverFabian**" y que contiene en nuevo archivo "**resumen.md**":
+
+![Se ha subido la rama "rama-OliverFabian" y contiene el archivo "resumen.md"](./img/git80.png)
+
+![Se ha subido la rama "rama-OliverFabian" y contiene el archivo "resumen.md"](./img/git81.png)
+
+Muestro en Github también la rama "**master**" que aún no tienen el archivo "**resumen.md**":
+
+![Muestro en Github también la rama "master" que aún no tienen el archivo "resumen.md"](./img/git82.png)
+
+Contenido del archivo "**resumen.md**":
+
+![Contenido del archivo "resumen.md"](./img/git83.png)
+
+## Oliver Fabián Stetcu Stepanov
