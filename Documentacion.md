@@ -1088,6 +1088,8 @@ Muestra en Github que se ha subido la nueva ``rama-TuNombre`` y que contienen en
 
 Muestra en Github también la rama ``main`` que aún no tienen el archivo **resumen.md**.
 
+- MEDIANTE COMANDOS -
+
 Vamos a VSCode y creo una nueva rama con el formato "**rama-OliverFabian**" y me cambio a ella en un sólo comando:
 
 ```bash
@@ -1096,7 +1098,7 @@ git checkout -b rama-OliverFabian
 
 Resultado:
 
-![Creo nueva rama "rama-OliverFabian](./img/git77.png)
+![Creo nueva rama "rama-OliverFabian"](./img/git77.png)
 
 Creo un archivo llamado "**resumen.md**" con un título y la tabla hecha en el apartado anterior.
 
@@ -1130,6 +1132,42 @@ Muestro en Github que se ha subido la nueva "**rama-OliverFabian**" y que contie
 Muestro en Github también la rama "**master**" que aún no tienen el archivo "**resumen.md**":
 
 ![Muestro en Github también la rama "master" que aún no tienen el archivo "resumen.md"](./img/git82.png)
+
+Contenido del archivo "**resumen.md**":
+
+![Contenido del archivo "resumen.md"](./img/git83.png)
+
+- MEDIANTE INTERFAZ GRÁFICA DESDE VISUAL STUDIO CODE -
+
+Vamos a VSCode y creo una nueva rama con el formato "**rama-OliverFabian**":
+
+![Creo nueva rama "rama-OliverFabian"](./img/git84.png)
+
+Pulsamos aquí y nos cambiamos a la rama:
+
+![Me cambio a la rama "rama-OliverFabian"](./img/git85.png)
+
+Creo un archivo llamado "**resumen.md**" con un título y la tabla hecha en el apartado anterior.
+
+Muestro la vista previa de markdown en VSCode:
+
+![Creo el archivo "resumen.md", escribo un título y la tabla hecha anteriormente](./img/git86.png)
+
+Añado y hago commit del archivo "**resumen.md**" de la "**rama-OliverFabian**" (le pongo mensaje de commit). Y lo subo al repositorio remoto de Github.
+
+![Añado y hago commit del archivo "resumen.md" de la "rama-OliverFabian".](./img/git87.png)
+
+También se puede hacer de esta forma:
+
+![Añado y hago commit del archivo "resumen.md" de la "rama-OliverFabian".](./img/git88.png)
+
+Hago push:
+
+![Hago push](./img/git89.png)
+
+Muestro en Github también la rama "**master**" que aún no tienen el archivo "**resumen.md**":
+
+![Muestro en Github también la rama "master" que aún no tienen el archivo "resumen.md"](./img/git90.png)
 
 Contenido del archivo "**resumen.md**":
 
