@@ -1165,12 +1165,18 @@ Hago push:
 
 ![Hago push](./img/git89.png)
 
+Muestro en Github que se ha subido la nueva "**rama-OliverFabian**" y que contiene en nuevo archivo "**resumen.md**":
+
+![Se ha subido la rama "rama-OliverFabian" y contiene el archivo "resumen.md"](./img/git90.png)
+
+![Se ha subido la rama "rama-OliverFabian" y contiene el archivo "resumen.md"](./img/git91.png)
+
 Muestro en Github también la rama "**master**" que aún no tienen el archivo "**resumen.md**":
 
-![Muestro en Github también la rama "master" que aún no tienen el archivo "resumen.md"](./img/git90.png)
+![Muestro en Github también la rama "master" que aún no tienen el archivo "resumen.md"](./img/git93.png)
 
 Contenido del archivo "**resumen.md**":
 
-![Contenido del archivo "resumen.md"](./img/git83.png)
+![Contenido del archivo "resumen.md"](./img/git94.png)
 
 ## Oliver Fabián Stetcu Stepanov
